@@ -57,10 +57,7 @@ export default function TenantRoomGenerator(user, userOnlineStatus) {
                     tenant: user.tenant,
                     roomUid: "general-tenant-" + user.tenant,
                     timestamp: {
-                      [db.Sequelize.Op.between]: [
-                        lastSeens[0].timestamp,
-                        messages[0].timestamp,
-                      ],
+                      [db.Sequelize.Op.gt]: lastSeens[0].timestamp,
                     },
                   },
                   raw: true,

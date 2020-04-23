@@ -70,10 +70,7 @@ export default function CustomRoomGenerator(user) {
                             tenant: user.tenant,
                             roomUid: ____room.Room.id,
                             timestamp: {
-                              [db.Sequelize.Op.between]: [
-                                lastSeens[0].timestamp,
-                                messages[0].timestamp,
-                              ],
+                              [db.Sequelize.Op.gt]: lastSeens[0].timestamp,
                             },
                           },
                           raw: true,
