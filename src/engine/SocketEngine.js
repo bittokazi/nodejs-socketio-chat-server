@@ -4,7 +4,7 @@ import io from "socket.io";
 
 export default function SocketEngine(app) {
   const httpApp = http.createServer(app);
-  const socketIo = io(httpApp, { origins: ["*"] });
+  const socketIo = io(httpApp, { origins: ["https://pmbt.bitto.website/"] });
   SocketIoHandlers(socketIo);
   return httpApp;
 }
