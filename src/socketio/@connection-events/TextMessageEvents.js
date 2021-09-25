@@ -1,6 +1,11 @@
 import * as db from "./../../models";
 
-export default function TextMessageEvents(socketIo, socket, user) {
+export default function TextMessageEvents(
+  socketIo,
+  socket,
+  user,
+  userOnlineStatus
+) {
   socket.on("chat.message.text", (roomId, payload, callback) => {
     const message = db.Message;
     let msg = {
@@ -10,9 +15,9 @@ export default function TextMessageEvents(socketIo, socket, user) {
       senderId: user.id,
       senderName: user.name,
       timestamp: new Date(),
-      data: payload
+      data: payload,
     };
-    message.create(msg).then(createdMessage => {
+    message.create(msg).then((createdMessage) => {
       callback(createdMessage);
       socketIo
         .to(`${createdMessage.tenant}/${createdMessage.roomUid}`)
@@ -32,22 +37,22 @@ export default function TextMessageEvents(socketIo, socket, user) {
         "roomUid",
         "senderName",
         "senderId",
-        "messageType"
+        "messageType",
       ],
       where: {
         tenant: user.tenant,
-        roomUid: roomId
+        roomUid: roomId,
       },
       raw: true,
       order: [["timestamp", "DESC"]],
-      limit: 10
+      limit: 10,
     };
 
     if (lastSeenMessageTimestamp) {
       query.where.timestamp = {
-        [sequelize.Op.lt]: lastSeenMessageTimestamp
+        [sequelize.Op.lt]: lastSeenMessageTimestamp,
       };
     }
-    message.findAll(query).then(messages => callback(messages.reverse()));
+    message.findAll(query).then((messages) => callback(messages.reverse()));
   });
 }

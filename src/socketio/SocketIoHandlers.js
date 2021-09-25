@@ -2,18 +2,22 @@ import AuthHandler from "./AuthHandler";
 import ConnectionEvents from "./@connection-events/ConnectionEvents";
 import RoomFetchEvent from "./@connection-events/RoomFetchEvent";
 import TextMessageEvents from "./@connection-events/TextMessageEvents";
+import LastSeenEvents from "./@connection-events/LastSeenEvents";
 
 export default function SocketIoHandlers(socketIo) {
   socketIo = AuthHandler(socketIo);
-  socketIo.on("authenticated", socket => {
+  let userOnlineStatus = {};
+  socketIo.on("authenticated", (socket) => {
     const user = {
       tenant: socket.decoded_token.tenant,
       id: socket.decoded_token.id,
-      name: socket.decoded_token.name
+      name: socket.decoded_token.name,
     };
     console.log("Connection Authenticated!!!");
-    ConnectionEvents(socket, user);
-    RoomFetchEvent(socket, user);
-    TextMessageEvents(socketIo, socket, user);
+    socket.join(`${user.tenant}/user-space-${user.id}`);
+    ConnectionEvents(socketIo, socket, user, userOnlineStatus);
+    RoomFetchEvent(socketIo, socket, user, userOnlineStatus);
+    TextMessageEvents(socketIo, socket, user, userOnlineStatus);
+    LastSeenEvents(socketIo, socket, user, userOnlineStatus);
   });
 }

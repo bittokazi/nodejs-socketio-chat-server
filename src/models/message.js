@@ -7,28 +7,28 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BIGINT,
         primaryKey: true,
         autoIncrement: true,
-        allowNull: false
+        allowNull: false,
       },
       tenant: { type: DataTypes.STRING, allowNull: false },
       roomUid: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
       },
       timestamp: {
         type: DataTypes.DATE,
         allowNull: false,
-        defaultValue: DataTypes.NOW
+        defaultValue: DataTypes.NOW,
       },
       data: { type: DataTypes.JSONB, allowNull: false },
       messageType: { type: DataTypes.STRING, allowNull: true },
       senderId: { type: DataTypes.BIGINT, allowNull: false },
-      senderName: { type: DataTypes.STRING, allowNull: false }
+      senderName: { type: DataTypes.STRING, allowNull: false },
     },
     {
-      timestamps: false
+      timestamps: false,
     }
   );
-  Message.associate = function(models) {
-    // Message.belongsTo(models.Room, { foreignKey: 'roomUid', targetKey: 'uid' });
+  Message.associate = function (models) {
+    Message.belongsTo(models.Room, { foreignKey: "roomUid", targetKey: "id" });
     // Message.hasMany(models.Mention, { as: 'mentions', foreignKey: 'messageId', targetKey: 'id' });
     // Message.hasMany(models.MessageSeen, {
     //   as: 'messageSeens',
