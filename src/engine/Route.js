@@ -2,7 +2,7 @@ import morgan from "morgan";
 import bodyParser from "body-parser";
 import express from "express";
 import Routes from "./../routes/Routes";
-import * as cors from "cors";
+import cors from "cors";
 
 export const Route = (app) => {
   app.use(morgan("dev"));
