@@ -2,12 +2,18 @@ import morgan from "morgan";
 import bodyParser from "body-parser";
 import express from "express";
 import Routes from "./../routes/Routes";
+import * as cors from "cors";
 
-export const Route = app => {
+export const Route = (app) => {
   app.use(morgan("dev"));
   app.use("/uploads", express.static("uploads"));
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json());
+  app.use(
+    cors({
+      origin: "*",
+    })
+  );
 
   app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
@@ -37,8 +43,8 @@ export const Route = app => {
     res.status(error.status || 500);
     res.json({
       error: {
-        message: error.message
-      }
+        message: error.message,
+      },
     });
   });
 };
