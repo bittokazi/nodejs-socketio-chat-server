@@ -13,10 +13,9 @@ export default function ConnectionEvents(
             user: {
               id: user.id,
               roomUid: element.roomUid,
-              status: 0,
+              status: 1,
             },
           });
-        promises.push(element);
       });
   });
 
