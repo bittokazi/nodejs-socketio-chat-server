@@ -1,6 +1,10 @@
 version: "3"
 services:
   pmbt-nodejs-socketio-chat-server:
+    container_name: pmbt-nodejs-socketio-chat-server
+    build:
+      context: ./
+      dockerfile: Dockerfile
     image: "pmbt-nodejs-socketio-chat-server:latest"
     restart: always
     network_mode: bridge
